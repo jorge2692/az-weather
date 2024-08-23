@@ -1,3 +1,4 @@
+import 'package:az_weather/api_call.dart';
 import 'package:az_weather/scr/features/forecast/screen/forecasts_screen.dart';
 import 'package:az_weather/scr/features/home/presentation/screen/home_screen.dart';
 import 'package:flutter/material.dart';
@@ -14,10 +15,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      routes: {
-        '/forecast': (context) => const ForecastsScreen(),
+      onGenerateRoute: (RouteSettings settings) {
+        switch (settings.name) {
+          case '/forecast':
+            final args = settings.arguments as ApiCall;
+            return MaterialPageRoute(
+              builder: (context) => ForecastsScreen(apiCall: args),
+            );
+          default:
+            return MaterialPageRoute(builder: (context) => const HomeScreen());
+        }
       },
-
       theme: ThemeData(
         // This is the theme of your application.
         //

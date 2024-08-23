@@ -2,6 +2,10 @@
 
 app que permite conocer el estado del clima en tu ciudad
 
+## Technical data
+AZ Weather is compiled with Flutter version 3.22.3 and Dart Version 3.4.4
+
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.

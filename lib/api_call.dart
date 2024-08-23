@@ -1,19 +1,32 @@
+import 'dart:async';
+
 import 'package:az_weather/scr/models/weather_current_model.dart';
 import 'package:az_weather/scr/models/weather_model.dart';
 import 'package:dio/dio.dart';
 
 class ApiCall {
-  Future<WeatherDataCurrent> weatherAPI() async {
-    Dio dio = Dio();
+  final String appId;
+
+  final Dio dio = Dio();
+
+  double? _lat,_lon;
+
+  ApiCall({required this.appId});
+
+  Future<void> weatherAPI(
+      {double? longitude, double? latitude, required StreamController streamController, required bool withRefresh}) async {
+    if(withRefresh) streamController.sink.add(null);
+    _lat = latitude;
+    _lon = longitude;
     var response = await dio.get(
-        'https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&appid=ae288ab0b86574e84f8fce427c9d8280');
-    return WeatherDataCurrent.fromJson(response.data);
+        'https://api.openweathermap.org/data/2.5/weather?lat=$_lat&lon=$_lon&appid=$appId&units=metric');
+
+    streamController.sink.add(WeatherDataCurrent.fromJson(response.data));
   }
 
   Future<ApiResponse> weatherForecastAPI() async {
-    Dio dio = Dio();
     var response = await dio.get(
-        'https://api.openweathermap.org/data/2.5/forecast?lat=44.34&lon=10.99&appid=ae288ab0b86574e84f8fce427c9d8280');
+        'https://api.openweathermap.org/data/2.5/forecast?lat=$_lat&lon=$_lon&appid=$appId&units=metric');
     return ApiResponse.fromJson(response.data);
   }
 }

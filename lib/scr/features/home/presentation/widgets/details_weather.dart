@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 
 import '../../../../../api_call.dart';
 
+///TODO aca le faltaria poner hora y fecha del pronostico
+///ademas de revisar si pone todas o solo pone 3 dias entonces tiene que ver cual usa
 class DetailsWeather extends StatelessWidget {
-  DetailsWeather({super.key});
-  ApiCall apiCall = ApiCall();
 
+  const DetailsWeather({super.key, required this.apiCall});
+
+  final ApiCall apiCall;
 
   @override
   Widget build(BuildContext context) {
@@ -22,45 +25,33 @@ class DetailsWeather extends StatelessWidget {
               itemCount: snapshot.data?.list.length,
               itemBuilder: (context, index) {
                 return Card(
-                  color: Colors.black12,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  child: ListTile(
+                    leading: Container(
+                        height: 60,
+                        width: 60,
+                        decoration: BoxDecoration(image: DecorationImage(image: NetworkImage('https://openweathermap.org/img/wn/${weatherForecastApi![index].weather[0].icon}@4x.png')))),
+                    title: Text(
+                     'Temp. Actual: ${weatherForecastApi[index].main.temp.toStringAsFixed(0).toString()}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
+                    subtitle: Row(
                       children: [
-                        Text(weatherForecastApi![index].main.temp.toString(), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-                        Container(
-                            height: 60,
-                            width: 60,
-                            decoration: BoxDecoration(image: DecorationImage(image: NetworkImage('https://openweathermap.org/img/wn/${weatherForecastApi[index].weather[0].icon}@4x.png')))),
-                        Text('${weatherForecastApi[index].main.tempMin.toString()}º',  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-                        Text('${weatherForecastApi[index].main.tempMax.toString()}º',  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                        Text('Min: ${weatherForecastApi[index].main.tempMin.toStringAsFixed(0).toString()}º ',  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                        Text('Max: ${weatherForecastApi[index].main.tempMax.toStringAsFixed(0).toString()}º ',  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                      ],
+                    ),
+                    trailing: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('${weatherForecastApi[index].dtTxt.day.toString()}/${weatherForecastApi[index].dtTxt.month.toString()}',  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 10)),
+                        Text('${weatherForecastApi[index].dtTxt.hour.toString()}:00',  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 10)),
                       ],
                     ),
                   ),
                 );
-              },
-              // child: Card(
-              //   child: Padding(
-              //     padding: EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-              //     child: Row(
-              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //       children: [
-              //         Text(weatherForecastApi!.first.main.temp.toString(), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-              //         Container(
-              //             height: 60,
-              //             width: 60,
-              //             decoration: BoxDecoration(image: DecorationImage(image: NetworkImage('https://openweathermap.org/img/wn/${weatherForecastApi.first.weather[0].icon}@4x.png')))),
-              //         Text('${weatherForecastApi!.first.main.tempMin.toString()}º',  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-              //         Text('${weatherForecastApi!.first.main.tempMax.toString()}º',  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-              //       ],
-              //     ),
-              //   ),
-              // ),
+                },
             ),
           );
         } else {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
       },
     );
