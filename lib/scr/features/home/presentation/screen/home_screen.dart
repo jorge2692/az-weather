@@ -2,10 +2,7 @@ import 'dart:async';
 
 import 'package:az_weather/api_call.dart';
 import 'package:az_weather/scr/features/home/presentation/widgets/card_weather.dart';
-import 'package:az_weather/scr/features/home/presentation/widgets/details_weather.dart';
 import 'package:az_weather/scr/models/weather_current_model.dart';
-import 'package:az_weather/scr/models/weather_forecast_model.dart';
-import 'package:az_weather/scr/models/weather_model.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -134,6 +131,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
                                 SizedBox(height: 20,),
+                                ElevatedButton(
+                                    onPressed: () => Navigator.pushNamed(context, '/forecast'),
+                                    child: Text('Pronosticos proximos')),
                                 Container(
                                   height: 150,
                                   child: ListView.builder(
@@ -146,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
                                 SizedBox(height: 20,),
-                                DetailsWeather(),
+
                               ],
                             );
                           } else {

@@ -1,3 +1,4 @@
+import 'package:az_weather/scr/features/forecast/screen/forecasts_screen.dart';
 import 'package:az_weather/scr/features/home/presentation/screen/home_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +14,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      routes: {
+        '/forecast': (context) => const ForecastsScreen(),
+      },
+
       theme: ThemeData(
         // This is the theme of your application.
         //

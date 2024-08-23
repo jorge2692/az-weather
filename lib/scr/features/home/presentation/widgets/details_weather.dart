@@ -16,7 +16,7 @@ class DetailsWeather extends StatelessWidget {
         if (snapshot.hasData) {
           var weatherForecastApi = snapshot.data?.list;
           return Container(
-            height: 200,
+            height: double.infinity,
             child: ListView.builder(
               shrinkWrap: true,
               itemCount: snapshot.data?.list.length,
@@ -33,8 +33,8 @@ class DetailsWeather extends StatelessWidget {
                             height: 60,
                             width: 60,
                             decoration: BoxDecoration(image: DecorationImage(image: NetworkImage('https://openweathermap.org/img/wn/${weatherForecastApi[index].weather[0].icon}@4x.png')))),
-                        Text('${weatherForecastApi![index].main.tempMin.toString()}º',  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-                        Text('${weatherForecastApi![index].main.tempMax.toString()}º',  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                        Text('${weatherForecastApi[index].main.tempMin.toString()}º',  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                        Text('${weatherForecastApi[index].main.tempMax.toString()}º',  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
                       ],
                     ),
                   ),
