@@ -82,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.deepPurpleAccent,
+        backgroundColor: Colors.lightBlueAccent,
         leading: _connectionIcon(_connectionStatus.first),
         actions: [
           GestureDetector(
@@ -136,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     return Container(
                       height: double.infinity,
                       width: double.infinity,
-                      color: Colors.deepPurpleAccent,
+                      color: Colors.lightBlueAccent,
                       child: Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
