@@ -166,8 +166,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         const Padding(
                           padding: EdgeInsets.symmetric(horizontal: 20),
                           child: Text(
-                              'No hay red disponible, por favor revisar su conexion',
-                              textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                            'No hay red disponible, por favor revisar su conexion',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
+                          ),
                         ),
                         const Expanded(child: SizedBox()),
                       ],
