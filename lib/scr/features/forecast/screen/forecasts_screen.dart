@@ -9,12 +9,14 @@ class ForecastsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Pronosticos proximos'),
+        backgroundColor: Colors.transparent,
+        title: const Text('Pronosticos proximos', style: TextStyle(color: Colors.white),),
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back, color: Colors.white,),
         ),
       ),
       body: DetailsWeather(apiCall: apiCall),

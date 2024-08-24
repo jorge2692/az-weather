@@ -13,47 +13,71 @@ class DetailsWeather extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<ApiResponse>(
-      future: apiCall.weatherForecastAPI(),
-      builder: (BuildContext context, AsyncSnapshot<ApiResponse> snapshot) {
-        if (snapshot.hasData) {
-          var weatherForecastApi = snapshot.data?.list;
-          return Container(
-            height: double.infinity,
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: snapshot.data?.list.length,
-              itemBuilder: (context, index) {
-                return Card(
-                  child: ListTile(
-                    leading: Container(
-                        height: 60,
-                        width: 60,
-                        decoration: BoxDecoration(image: DecorationImage(image: NetworkImage('https://openweathermap.org/img/wn/${weatherForecastApi![index].weather[0].icon}@4x.png')))),
-                    title: Text(
-                     'Temp. Actual: ${weatherForecastApi[index].main.temp.toStringAsFixed(0).toString()}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-                    subtitle: Row(
-                      children: [
-                        Text('Min: ${weatherForecastApi[index].main.tempMin.toStringAsFixed(0).toString()}º ',  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
-                        Text('Max: ${weatherForecastApi[index].main.tempMax.toStringAsFixed(0).toString()}º ',  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
-                      ],
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Color(0xff3DA7B8),
+            Color(0xff515076)
+          ],
+        ),
+      ),
+      child: Column(
+        children: [
+          SizedBox(height: MediaQuery.of(context).padding.top),
+          Expanded(
+            child: FutureBuilder<ApiResponse>(
+              future: apiCall.weatherForecastAPI(),
+              builder: (BuildContext context, AsyncSnapshot<ApiResponse> snapshot) {
+                if (snapshot.hasData) {
+                  var weatherForecastApi = snapshot.data?.list;
+                  return SizedBox(
+                    height: double.infinity,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: snapshot.data?.list.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Card(
+                            elevation: 0,
+                            color: Colors.white.withOpacity(0.3),
+                            child: ListTile(
+                              leading: Container(
+                                  height: 60,
+                                  width: 60,
+                                  decoration: BoxDecoration(image: DecorationImage(image: NetworkImage('https://openweathermap.org/img/wn/${weatherForecastApi![index].weather[0].icon}@4x.png')))),
+                              title: Text(
+                               'Temp. Actual: ${weatherForecastApi[index].main.temp.toStringAsFixed(0).toString()}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.white),),
+                              subtitle: Row(
+                                children: [
+                                  Text('Min: ${weatherForecastApi[index].main.tempMin.toStringAsFixed(0).toString()}º ',  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15,color: Colors.white)),
+                                  Text('Max: ${weatherForecastApi[index].main.tempMax.toStringAsFixed(0).toString()}º ',  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15,color: Colors.white)),
+                                ],
+                              ),
+                              trailing: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text('${weatherForecastApi[index].dtTxt.day.toString()}/${weatherForecastApi[index].dtTxt.month.toString()}',  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 10,color: Colors.white)),
+                                  Text('${weatherForecastApi[index].dtTxt.hour.toString()}:00',  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 10,color: Colors.white)),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                        },
                     ),
-                    trailing: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('${weatherForecastApi[index].dtTxt.day.toString()}/${weatherForecastApi[index].dtTxt.month.toString()}',  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 10)),
-                        Text('${weatherForecastApi[index].dtTxt.hour.toString()}:00',  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 10)),
-                      ],
-                    ),
-                  ),
-                );
-                },
+                  );
+                } else {
+                  return const Center(child: CircularProgressIndicator());
+                }
+              },
             ),
-          );
-        } else {
-          return const Center(child: CircularProgressIndicator());
-        }
-      },
+          ),
+        ],
+      ),
     );
   }
 }
