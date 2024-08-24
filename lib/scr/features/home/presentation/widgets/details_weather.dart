@@ -50,13 +50,23 @@ class DetailsWeather extends StatelessWidget {
                                   width: 60,
                                   decoration: BoxDecoration(image: DecorationImage(image: NetworkImage('https://openweathermap.org/img/wn/${weatherForecastApi![index].weather[0].icon}@4x.png')))),
                               title: Text(
-                               'Temp. Actual: ${weatherForecastApi[index].main.temp.toStringAsFixed(0).toString()}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.white),),
-                              subtitle: Row(
+                               'Temp: ${weatherForecastApi[index].main.temp.toStringAsFixed(0).toString()} º',
+                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.white),),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('Min: ${weatherForecastApi[index].main.tempMin.toStringAsFixed(0).toString()}º ',  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15,color: Colors.white)),
-                                  Text('Max: ${weatherForecastApi[index].main.tempMax.toStringAsFixed(0).toString()}º ',  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15,color: Colors.white)),
+                                  Text(
+                                    weatherForecastApi[index].weather[0].description,
+                                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.white),),
+                                  Row(
+                                    children: [
+                                      Text('Min: ${weatherForecastApi[index].main.tempMin.toStringAsFixed(0).toString()}º ',  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15,color: Colors.white)),
+                                      Text('Max: ${weatherForecastApi[index].main.tempMax.toStringAsFixed(0).toString()}º ',  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15,color: Colors.white)),
+                                    ],
+                                  ),
                                 ],
                               ),
+                              isThreeLine: true,
                               trailing: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [

@@ -19,14 +19,14 @@ class ApiCall {
     _lat = latitude;
     _lon = longitude;
     var response = await dio.get(
-        'https://api.openweathermap.org/data/2.5/weather?lat=$_lat&lon=$_lon&appid=$appId&units=metric');
+        'https://api.openweathermap.org/data/2.5/weather?lat=$_lat&lon=$_lon&appid=$appId&units=metric&lang=es');
 
     streamController.sink.add(WeatherDataCurrent.fromJson(response.data));
   }
 
   Future<ApiResponse> weatherForecastAPI() async {
     var response = await dio.get(
-        'https://api.openweathermap.org/data/2.5/forecast?lat=$_lat&lon=$_lon&appid=$appId&units=metric');
+        'https://api.openweathermap.org/data/2.5/forecast?lat=$_lat&lon=$_lon&appid=$appId&units=metric&lang=es');
     return ApiResponse.fromJson(response.data);
   }
 }

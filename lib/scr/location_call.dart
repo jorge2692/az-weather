@@ -12,8 +12,23 @@ class LocationCall{
   double? latitude,longitude;
 
   /// Use location library to get long and lat data
-  Future<void> getLocation(StreamController<LocationResponse> locationStreamController)async{
+  Future<void> getLocation(StreamController<LocationResponse?> locationStreamController)async{
     try {
+      locationStreamController.sink.add(null);
+      /// check location is enabled
+      var service = await location.serviceEnabled();
+      if(!service) {
+        var service2 = await location.requestService();
+        if(!service2) throw ();
+      }
+      /// check permission
+      var permission = await location.hasPermission();
+      if (permission == PermissionStatus.denied) {
+        var permissionGranted = await location.requestPermission();
+        if (permissionGranted != PermissionStatus.granted) {
+          throw();
+        }
+      }
       LocationData locationData = await location.getLocation();
       latitude = locationData.latitude;
       longitude = locationData.longitude;

@@ -235,7 +235,7 @@ final podValues = EnumValues({
 class Weather {
   int id;
   MainEnum main;
-  Description description;
+  String description;
   String icon;
 
   Weather({
@@ -252,7 +252,7 @@ class Weather {
   factory Weather.fromJson(Map<String, dynamic> json) => Weather(
     id: json["id"],
     main: mainEnumValues.map[json["main"]]!,
-    description: descriptionValues.map[json["description"]]!,
+    description: json["description"]!,
     icon: json["icon"],
   );
 
