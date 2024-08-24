@@ -73,10 +73,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _connectionIcon(ConnectivityResult connectionStatus) {
-    if (connectionStatus.name == 'wifi')
-      return const Icon(Icons.wifi, color: Colors.white);
-    if (connectionStatus.name == 'mobile')
-      return const Icon(Icons.signal_cellular_alt, color: Colors.white);
+    if (connectionStatus.name == 'wifi') return const Icon(Icons.wifi, color: Colors.white);
+    if (connectionStatus.name == 'mobile') return const Icon(Icons.signal_cellular_alt, color: Colors.white);
     return const SizedBox();
   }
 
@@ -165,9 +163,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             size: MediaQuery.of(context).size.height * 0.150,
                           ),
                         ),
-                        const Text(
-                            'No hay red disponible, por favor resvisar su conexion',
-                            textAlign: TextAlign.center),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: Text(
+                              'No hay red disponible, por favor revisar su conexion',
+                              textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                        ),
                         const Expanded(child: SizedBox()),
                       ],
                     );
@@ -196,7 +197,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     top: MediaQuery.of(context).orientation ==
                                             Orientation.portrait
                                         ? MediaQuery.of(context).size.height *
-                                            0.15
+                                            0.1
                                         : 0,
                                   ),
                                   decoration: BoxDecoration(
@@ -273,7 +274,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         children: [
                                           _showData('Latitud',
                                               '${(snapshot.data!.coord.lat).toStringAsFixed(0).toString()} º'),
-                                          SizedBox(
+                                          const SizedBox(
                                             width: 25,
                                           ),
                                           _showData('Longitud',
@@ -296,7 +297,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         'Pronosticos proximos',
                                         style: TextStyle(color: Colors.black),
                                       ),
-                                      const SizedBox(width: 20),
+                                      SizedBox(width: 20),
                                       Icon(Icons.arrow_forward_ios)
                                     ],
                                   )),
