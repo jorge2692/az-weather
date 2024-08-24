@@ -82,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.lightBlueAccent,
+        backgroundColor: Colors.blueGrey,
         leading: _connectionIcon(_connectionStatus.first),
         actions: [
           GestureDetector(
@@ -101,6 +101,22 @@ class _HomeScreenState extends State<HomeScreen> {
             ///TODO toca ver que poner en caso de errores
             if(snapshot.connectionState == ConnectionState.waiting){
               return const Center(child: Text('obteniendo localización ...'));
+            }
+            if(snapshot.connectionState == ConnectionState.none) {
+              return Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 100),
+                  child: Container(
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(100), color: Colors.grey.withOpacity(0.3)),
+                    alignment: Alignment.center,
+                    child: Icon(
+                      Icons.location_off_outlined, size: MediaQuery.of(context).size.height * 0.150,),
+                  ),
+                ),
+                Text('No hay red disponible, por favor resvisar su conexion', textAlign: TextAlign.center),
+              ],
+            );
             }
             if(snapshot.hasData){
               apiCall.weatherAPI(longitude: _locationCall.longitude, latitude: _locationCall.latitude, streamController: _actualDataController, withRefresh: false);
@@ -136,7 +152,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     return Container(
                       height: double.infinity,
                       width: double.infinity,
-                      color: Colors.lightBlueAccent,
+                      color: Colors.blueGrey,
                       child: Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
