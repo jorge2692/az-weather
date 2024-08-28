@@ -7,7 +7,9 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../../main.dart';
 import '../../../../models/location_response.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -29,11 +31,13 @@ class _HomeScreenState extends State<HomeScreen> {
   /// Uso de location
   final LocationCall _locationCall = LocationCall();
   double? lat, long;
+  bool isDarkMode = false;
   late StreamController<LocationResponse?> _locationStreamController;
 
   @override
   void initState() {
     super.initState();
+    _loadTheme();
     _actualDataController = StreamController<WeatherDataCurrent?>.broadcast();
     _locationStreamController = StreamController<LocationResponse?>.broadcast();
     _connectivitySubscription =
@@ -78,6 +82,28 @@ class _HomeScreenState extends State<HomeScreen> {
     return const SizedBox();
   }
 
+  void _loadTheme() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      isDarkMode = prefs.getBool('isDarkMode') ?? false;
+    });
+  }
+
+  void _saveTheme(bool value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isDarkMode', value);
+  }
+
+
+  void _toggleTheme() {
+    setState(() {
+      isDarkMode = !isDarkMode;
+      _saveTheme(isDarkMode);
+      final mode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
+      MyApp.of(context)!.setThemeMode(mode);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,18 +119,24 @@ class _HomeScreenState extends State<HomeScreen> {
                         longitude: _locationCall.longitude,
                         latitude: _locationCall.latitude,
                         streamController: _actualDataController,
-                        withRefresh: true)
+                        withRefresh: true,
+                        isConnect: _connectionStatus.first.name == 'none'
+                )
                     : null,
                 child: const Icon(Icons.refresh, color: Colors.white)),
           ],
         ),
         body: Container(
           height: double.infinity,
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
+          decoration: BoxDecoration(
+            gradient: !isDarkMode ? const LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [Color(0xff3DA7B8), Color(0xff515076)],
+            ) : const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Colors.black, Colors.white10],
             ),
           ),
           child: StreamBuilder<LocationResponse?>(
@@ -149,9 +181,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       longitude: _locationCall.longitude,
                       latitude: _locationCall.latitude,
                       streamController: _actualDataController,
-                      withRefresh: false);
+                      withRefresh: false,
+                      isConnect: _connectionStatus.first.name == 'none'
+                  );
 
-                  if (_connectionStatus.first.name == 'none') {
+                  if (_connectionStatus.first.name == 'none' && !snapshot.hasData) {
                     return Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
@@ -193,7 +227,17 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Container(
+                              _connectionStatus.first.name == 'none'  ? Container(
+                                  margin: EdgeInsets.only(
+                                    top: MediaQuery.of(context).orientation ==
+                                        Orientation.portrait
+                                        ? MediaQuery.of(context).size.height *
+                                        0.1
+                                        : 0,
+                                  ),
+                                  height: 200,
+                                  width: 200,
+                                  child: const Icon(Icons.wifi_off, size: 150,)) : Container(
                                   height: 200,
                                   width: 200,
                                   margin: EdgeInsets.only(
@@ -302,6 +346,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                       SizedBox(width: 20),
                                       Icon(Icons.arrow_forward_ios)
+                                    ],
+                                  )),
+                              ElevatedButton(
+                                  onPressed: _toggleTheme,
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        isDarkMode ? 'Modo Claro' : 'Modo Oscuro',
+                                        style: const TextStyle(color: Colors.black),
+                                      ),
+                                      const SizedBox(width: 20),
+                                      Icon(isDarkMode ? Icons.light_mode : Icons.nightlight_round)
                                     ],
                                   )),
                             ],

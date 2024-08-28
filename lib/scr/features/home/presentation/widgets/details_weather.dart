@@ -45,12 +45,15 @@ class DetailsWeather extends StatelessWidget {
                             elevation: 0,
                             color: Colors.white.withOpacity(0.3),
                             child: ListTile(
-                              leading: Container(
+                              leading: apiCall.isNConnect == true ? const SizedBox(
+                                  height: 60,
+                                  width: 60,
+                                  child: Icon(Icons.wifi_off)) : Container(
                                   height: 60,
                                   width: 60,
                                   decoration: BoxDecoration(image: DecorationImage(image: NetworkImage('https://openweathermap.org/img/wn/${weatherForecastApi![index].weather[0].icon}@4x.png')))),
                               title: Text(
-                               'Temp: ${weatherForecastApi[index].main.temp.toStringAsFixed(0).toString()} º',
+                               'Temp: ${weatherForecastApi![index].main.temp.toStringAsFixed(0).toString()} º',
                                 style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.white),),
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
